@@ -6,7 +6,7 @@ const {getBootcamps, getBootcamp, crateBootcamp, updateBootcamp, deleteBootcamp}
 
 router.get('/', getBootcamps)
 
-router.get('/:id', getBootcamps)
+router.get('/:id', getBootcamp)
 
 router.post('/', crateBootcamp)
 

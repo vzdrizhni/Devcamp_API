@@ -7,17 +7,18 @@ exports.getBootcamps = async (req, res, next) => {
     } catch (error) {
         res.status(400).json({success: false})
     }
-    res.status(200).json({msg: 'Successfully fetched all posts'})
 }
 
 exports.getBootcamp = async (req, res, next) => {
     try {
         const bootcamp = await Bootcamp.findById(req.params.id);
         res.status(200).json({success: true, data: bootcamp})
+        if (!bootcamp) {
+            res.status(404)
+        }
     } catch (error) {
-        res.status(200).json({success: false})
+        next(error)
     }
-    res.status(200).json({msg: 'Successfully post' + req.params.id})
 }
 
 exports.crateBootcamp = async (req, res, next) => {
@@ -29,10 +30,23 @@ exports.crateBootcamp = async (req, res, next) => {
     }
 }
 
-exports.updateBootcamp = (req, res, next) => {
-    res.status(200).json({msg: 'Successfully updated post' + req.params.id})
+exports.updateBootcamp = async (req, res, next) => {
+    const bootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
+    });
+    if (!bootcamp) {
+        return res.status(404).json({success: false})
+    }
+
+    res.status(200).json({success: true, data: bootcamp})
 }
 
-exports.deleteBootcamp = (req, res, next) => {
-    res.status(200).json({msg: 'Successfully deleted post' + req.params.id})
+exports.deleteBootcamp = async (req, res, next) => {
+    const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
+    if (!bootcamp) {
+        return res.status(404).json({success: false})
+    }
+
+    res.status(200).json({success: true, data: bootcamp})
 }
