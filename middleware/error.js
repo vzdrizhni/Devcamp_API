@@ -23,7 +23,7 @@ const errorHandler = (err, req, res, next) => {
         error = new ErrorResponse(message, 400);
     }
 
-    res.status(error.statusCode || 500).json({success: false, error: err.message || 'Srver Error'})
+    res.status(error.statusCode || 500).json({success: false, error: error.message || 'Srver Error'})
 }
 
 module.exports = errorHandler;
