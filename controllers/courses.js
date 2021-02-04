@@ -67,3 +67,62 @@ exports.addCourse = asyncHandler(async (req, res, next) => {
     data: course
   });
 });
+
+exports.updateCourse = asyncHandler(async (req, res, next) => {
+  let course = await Course.findById(req.params.id);
+
+  if (!course) {
+    return next(
+      new ErrorResponse(`No course with the id of ${req.params.id}`, 404)
+    );
+  }
+
+  // Make sure user is course owner
+  // if (course.user.toString() !== req.user.id && req.user.role !== 'admin') {
+  //   return next(
+  //     new ErrorResponse(
+  //       `User ${req.user.id} is not authorized to update course ${course._id}`,
+  //       401
+  //     )
+  //   );
+  // }
+
+  course = await Course.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
+
+  course.save();
+
+  res.status(200).json({
+    success: true,
+    data: course
+  });
+});
+
+exports.deleteCourse = asyncHandler(async (req, res, next) => {
+  const course = await Course.findById(req.params.id);
+
+  if (!course) {
+    return next(
+      new ErrorResponse(`No course with the id of ${req.params.id}`, 404)
+    );
+  }
+
+  // Make sure user is course owner
+  // if (course.user.toString() !== req.user.id && req.user.role !== 'admin') {
+  //   return next(
+  //     new ErrorResponse(
+  //       `User ${req.user.id} is not authorized to delete course ${course._id}`,
+  //       401
+  //     )
+  //   );
+  // }
+
+  await course.remove();
+
+  res.status(200).json({
+    success: true,
+    data: {}
+  });
+});
