@@ -6,9 +6,12 @@ const router = express.Router();
 
 router.use('/:bootcampId/courses', courseRouter);
 
-const {getBootcamps, getBootcamp, crateBootcamp, updateBootcamp, deleteBootcamp, getBootcampsInRadius, bootcampPhotoUpload} = require('../controllers/bootcamps')
+const {getBootcamps, getBootcamp, crateBootcamp, updateBootcamp, deleteBootcamp, getBootcampsInRadius, bootcampPhotoUpload} = require('../controllers/bootcamps');
 
-router.get('/', getBootcamps)
+const Bootcamp = require('../models/Bootcamp');
+const advancedResults = require('../middleware/advancedResults');
+
+router.get('/', advancedResults(Bootcamp, 'courses'), getBootcamps)
 
 router.get('/:id', getBootcamp)
 
