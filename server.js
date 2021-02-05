@@ -1,8 +1,11 @@
 const express = require('express');
+const path = require('path');
+
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
-const errorHandler = require('./middleware/error')
+const errorHandler = require('./middleware/error');
+const fileupload = require('express-fileupload');
 
 const connectDB = require('./config/db')
 
@@ -23,6 +26,10 @@ app.use(express.json());
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('combined'))
 }
+
+app.use(fileupload());
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
