@@ -12,7 +12,7 @@ const advancedResults = require('../middleware/advancedResults');
 
 const router = express.Router({mergeParams: true});
 
-const {protect} = require('../middleware/auth');
+const {protect, authorize} = require('../middleware/auth');
 
 router.get('/', advancedResults(Course, {
   path: 'bootcamp',
@@ -20,7 +20,7 @@ router.get('/', advancedResults(Course, {
 }), getCourses);
 router.get('/:id', getCourse);
 router.post('/', protect, addCourse);
-router.put('/:id', protect, updateCourse);
-router.delete('/:id', protect, deleteCourse);
+router.put('/:id', protect, authorize('publisher', 'admin'), updateCourse);
+router.delete('/:id', protect, authorize('publisher', 'admin'), deleteCourse);
 
 module.exports = router;
