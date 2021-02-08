@@ -10,19 +10,20 @@ const {getBootcamps, getBootcamp, crateBootcamp, updateBootcamp, deleteBootcamp,
 
 const Bootcamp = require('../models/Bootcamp');
 const advancedResults = require('../middleware/advancedResults');
+const {protect} = require('../middleware/auth');
 
 router.get('/', advancedResults(Bootcamp, 'courses'), getBootcamps)
 
 router.get('/:id', getBootcamp)
 
-router.post('/', crateBootcamp)
+router.post('/', protect, crateBootcamp)
 
-router.put('/:id', updateBootcamp)
+router.put('/:id', protect, updateBootcamp)
 
-router.delete('/:id', deleteBootcamp)
+router.delete('/:id', protect, deleteBootcamp)
 
 router.get('/radius/:zipcode/:distance', getBootcampsInRadius)
 
-router.put('/:id/photo', bootcampPhotoUpload)
+router.put('/:id/photo', protect, bootcampPhotoUpload)
 
 module.exports = router;
