@@ -11,20 +11,7 @@ exports.register = asyncHandler(async(req, res, next) => {
   // Create user
   const user = await User.create({name, email, password, role});
 
-  // grab token and send to email
-  // const confirmEmailToken = user.generateEmailConfirmToken();
+  const token = user.getSignedJwtToken();
 
-  // // Create reset url
-  // const confirmEmailURL = `${req
-  //   .protocol}://${req
-  //   .get('host',)}/api/v1/auth/confirmemail?token=${confirmEmailToken}`;
-
-  // const message = `You are receiving this email because you need to confirm your email address. Please make a GET request to: \n\n ${confirmEmailURL}`;
-
-  // user.save({validateBeforeSave: false});
-
-  // const sendResult = await sendEmail({email: user.email, subject: 'Email confirmation token', message});
-
-  // sendTokenResponse(user, 200, res);
-  res.json({data: user});
+  res.json({data: user, token});
 });
