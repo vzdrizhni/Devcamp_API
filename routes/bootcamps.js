@@ -1,10 +1,12 @@
 const express = require('express');
 
 const courseRouter = require('./courses')
+const reviewRouter = require('./reviews')
 
 const router = express.Router();
 
 router.use('/:bootcampId/courses', courseRouter);
+router.use('/:bootcampId/reviews', reviewRouter);
 
 const {getBootcamps, getBootcamp, crateBootcamp, updateBootcamp, deleteBootcamp, getBootcampsInRadius, bootcampPhotoUpload} = require('../controllers/bootcamps');
 
